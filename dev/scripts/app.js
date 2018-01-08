@@ -14,10 +14,12 @@ class App extends React.Component {
         <Router>
           <div>
             <Header />
+            <main>
               <Switch>
                 <Route exact path='/' component={Homepage}></Route>
                 <Route exact path='/addrecipe' component={AddRecipe}></Route>
               </ Switch>
+            </main>
             <footer>
               <p>&copy; 2018 Chelsea Keeley</p>
             </footer>
