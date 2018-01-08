@@ -1,10 +1,19 @@
 import React from 'react';
+import {
+    BrowserRouter as Router, Route, Link, Switch
+} from 'react-router-dom';
+import AddRecipe from './addRecipe.js';
+
 
 const Header = () =>{
         return (
-            <header>
-                <h1>Recipe Box</h1>
-            </header>
+            <div>
+                <header>
+                    <h1>Recipe Box</h1>
+                </header>
+                <Link to='/addrecipe'>Add Recipe</Link>
+                <Link to='/'>Home</Link>
+            </div>
         )
 }
 

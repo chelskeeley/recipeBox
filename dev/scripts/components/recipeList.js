@@ -1,6 +1,6 @@
 import React from 'React';
 
-class recipeList extends React.Component {
+class RecipeList extends React.Component {
     render(){
         return(
             <div>
@@ -9,3 +9,5 @@ class recipeList extends React.Component {
         )
     }
 }
+
+export default RecipeList

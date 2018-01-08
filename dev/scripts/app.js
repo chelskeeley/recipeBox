@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter as Router, Route, Link
+  BrowserRouter as Router, Route, Link, Switch
 } from 'react-router-dom';
-import Header from './components/header.js'
+import Header from './components/header.js';
+import Homepage from './components/homePage.js';
+import AddRecipe from './components/addRecipe.js';
+
 
 class App extends React.Component {
     render() {
@@ -12,7 +15,8 @@ class App extends React.Component {
           <div>
             <Header />
               <Switch>
-                <Route exact path='/' component='HomePage'></Route>
+                <Route exact path='/' component={Homepage}></Route>
+                <Route exact path='/addrecipe' component={AddRecipe}></Route>
               </ Switch>
             <footer>
               <p>&copy; 2018 Chelsea Keeley</p>
