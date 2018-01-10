@@ -3,9 +3,22 @@ import ReactDOM from 'react-dom';
 import {
   BrowserRouter as Router, Route, Link, Switch
 } from 'react-router-dom';
+import firebase from 'firebase';
+
 import Header from './components/header.js';
 import Homepage from './components/homePage.js';
 import AddRecipe from './components/addRecipe.js';
+
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyBvWnA0ZVeRC_JmsluWB1-rwp_B-teo-7Y",
+  authDomain: "recipebox-7e786.firebaseapp.com",
+  databaseURL: "https://recipebox-7e786.firebaseio.com",
+  projectId: "recipebox-7e786",
+  storageBucket: "",
+  messagingSenderId: "601312177941"
+};
+firebase.initializeApp(config);
 
 
 class App extends React.Component {
