@@ -10,6 +10,7 @@ class AddRecipe extends React.Component {
             tags: [],
             tagInput: '',
             description: '',
+            descriptionInput: '',
             ingredients: '',
             directions: '',
             titleAdded: false,
@@ -20,6 +21,8 @@ class AddRecipe extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.tagClick = this.tagClick.bind(this);
         this.clearTag = this.clearTag.bind(this);
+        this.descriptionClick = this.descriptionClick.bind(this);
+        this.descriptionX = this.descriptionX.bind(this);
     }
 
     //saves input in text areas into state
@@ -69,7 +72,22 @@ class AddRecipe extends React.Component {
         this.setState({
             tags: updatedTags
         })
-        
+    }
+
+    //FUNCTIONS FOR DESCRIPTION PREVIEW
+    descriptionClick(e){
+        e.preventDefault();
+        this.setState({
+            description: this.state.descriptionInput,
+            descriptionInput: ''
+        })
+    }
+
+    //removes description on X click
+    descriptionX(){
+        this.setState({
+            description: ''
+        })
     }
 
 
@@ -118,15 +136,25 @@ class AddRecipe extends React.Component {
                                     <div onClick={()=> this.clearTag(i)}>X</div>
                                 </li>
                             )
-                            
                         })}
                     </ul>
                     
                     {/* DESCRIPTION */}
                     <StepTitles stepNum='4' stepName='Recipe Description' description='Add a short description to discuss this delicious addition to your recipe box!' inputId='description'/>
-                    <textarea name="description" id="description" cols="40" rows="10"></textarea>
-                    <button>Add</button>
+                    <textarea name="descriptionInput" id="description" cols="40" rows="10" onChange={this.handleChange} value={this.state.descriptionInput}></textarea>
+                    <button onClick={this.descriptionClick}>Add</button>
+                    {
+                        this.state.description
+                        ? (
+                            <div>
+                                <p>{this.state.description}</p>
+                                <div onClick={this.descriptionX}>X</div>
+                            </div>
+                        )
+                        : null
+                    }
                     
+
                     {/* INGREDIENTS */}
                     <StepTitles stepNum='5' stepName='Ingredients' description='Please add ingredients.' inputId='indgredients'/>
                     <input type="text" id="ingredients" name='ingredients' />
