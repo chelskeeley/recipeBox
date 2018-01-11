@@ -1,4 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import firebase from 'firebase';
+import {
+        BrowserRouter as Router, Route, Link, Switch, Redirect
+    } from 'react-router-dom';
 
 class AddRecipe extends React.Component {
     constructor(){
@@ -39,11 +44,6 @@ class AddRecipe extends React.Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
-
-    //form submit
-    handleSubmit(e){
-        e.preventDefault();
     }
 
     // FUNCITONS FOR TITLE PREVIEW
@@ -142,6 +142,42 @@ class AddRecipe extends React.Component {
         })
     }
 
+    //FIREBASE FUNCTIONS
+    //form submit
+    handleSubmit(e) {
+        e.preventDefault();
+        const dbRef = firebase.database().ref();
+        let recipeObject = {
+            title: this.state.title,
+            tags: this.state.tags,
+            description: this.state.description,
+            ingredients: this.state.ingredients,
+            directions: this.state.directions
+        };
+        dbRef.push(recipeObject);
+        this.setState({
+            title: '',
+            titleInput: '',
+            imageURL: '',
+            tags: [],
+            tagInput: '',
+            description: '',
+            descriptionInput: '',
+            ingredients: [],
+            ingredientsInput: '',
+            quantityInput: '',
+            measurementInput: '',
+            addDirectionsInput: '',
+            directions: [],
+            directionInput: '',
+            titleAdded: false,
+        });
+        this.props.history.push('/');
+        
+
+    }
+
+
     render(){
         //display logic for recipe title
         let titleContent = '';
@@ -154,10 +190,6 @@ class AddRecipe extends React.Component {
         } else {
             titleValue = this.state.title;
         }
-
-        //display logic for tags
-        
-
 
         return (
             <div>
@@ -256,7 +288,7 @@ class AddRecipe extends React.Component {
                             )
                         })}
                     </ol>
-                <input type="submit" value='Create Recipe'/>
+                    <input type="submit" value='Create Recipe' />
                 </form>
             </div>
         )

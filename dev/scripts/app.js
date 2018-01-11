@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  BrowserRouter as Router, Route, Link, Switch
+  BrowserRouter as Router, Route, Link, Switch, Redirect
 } from 'react-router-dom';
 import firebase from 'firebase';
 
