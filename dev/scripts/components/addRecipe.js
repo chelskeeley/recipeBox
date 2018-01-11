@@ -11,8 +11,13 @@ class AddRecipe extends React.Component {
             tagInput: '',
             description: '',
             descriptionInput: '',
-            ingredients: '',
-            directions: '',
+            ingredients: [],
+            ingredientsInput: '',
+            quantityInput: '',
+            measurementInput: '',
+            addDirectionsInput: '',
+            directions: [],
+            directionInput: '',
             titleAdded: false,
         }
         this.handleChange = this.handleChange.bind(this);
@@ -23,6 +28,10 @@ class AddRecipe extends React.Component {
         this.clearTag = this.clearTag.bind(this);
         this.descriptionClick = this.descriptionClick.bind(this);
         this.descriptionX = this.descriptionX.bind(this);
+        this.ingredientsClick = this.ingredientsClick.bind(this);
+        this.clearIngredient = this.clearIngredient.bind(this);
+        this.directionsClick = this.directionsClick.bind(this);
+        this.clearDirection = this.clearDirection.bind(this)
     }
 
     //saves input in text areas into state
@@ -59,8 +68,10 @@ class AddRecipe extends React.Component {
     // FUNCTIONS FOR TAGS PREVIEW
     tagClick(e) {
         e.preventDefault();
-        this.state.tags.push(this.state.tagInput);
+        const tagArray = Array.from(this.state.tags);
+        tagArray.push(this.state.tagInput);
         this.setState({
+            tags: tagArray,
             tagInput: '',
         })
     }
@@ -90,6 +101,46 @@ class AddRecipe extends React.Component {
         })
     }
 
+    //FUNCTIONS FOR INGREDIENTS PREVIEW
+    ingredientsClick(e){
+        e.preventDefault();
+        let newIngredients = Array.from(this.state.ingredients);
+        newIngredients.push(`${this.state.quantityInput} ${this.state.measurementInput} ${this.state.ingredientsInput}, ${this.state.addDirectionsInput}`);
+        this.setState({
+            ingredients: newIngredients,
+            quantityInput: '',
+            measurementInput: '',
+            ingredientsInput: '',
+            addDirectionsInput: '',
+        })
+    }
+
+    clearIngredient(i){
+        let updatedIngredients = Array.from(this.state.ingredients);
+        updatedIngredients.splice(i, 1);
+        this.setState({
+            ingredients: updatedIngredients
+        })
+    }
+
+    //FUNCTIONS FOR DIRECTIONS PREVIEW
+    directionsClick(e){
+        e.preventDefault();
+        let newDirection = Array.from(this.state.directions);
+        newDirection.push(this.state.directionInput);
+        this.setState({
+            directions: newDirection,
+            directionInput: '',
+        })
+    }
+
+    clearDirection(i){
+        let updatedDirections = Array.from(this.state.directions);
+        updatedDirections.splice(i,1);
+        this.setState({
+            directions: updatedDirections,
+        })
+    }
 
     render(){
         //display logic for recipe title
@@ -112,7 +163,7 @@ class AddRecipe extends React.Component {
             <div>
                 <form action="" onSubmit={this.handleSubmit}>
                     {/* TITLE */}
-                    <StepTitles stepNum='1' stepName='Recipe Title' description='' inputId='title' />
+                    <StepTitles stepNum='1' stepName='Recipe Title' description='' inputId='title' showLabel={true}/>
                     <input type="text" id='title' name='titleInput' onChange={this.handleChange} value={this.state.titleInput} ref={el => this.inputValue = el}/>
                     <button onClick={this.titleClick}>Add</button>
                     <div>
@@ -121,12 +172,12 @@ class AddRecipe extends React.Component {
                     </div>
 
                     {/* IMAGES */}
-                    <StepTitles stepNum='2' stepName='Upload Photo' description='Upload or drag and drop an image to add a photo to your post!' inputId=''/>
+                    <StepTitles stepNum='2' stepName='Upload Photo' description='Upload or drag and drop an image to add a photo to your post!' inputId='' showLabel={true}/>
                     {/* add image drag and drop functionality here */}
 
                     {/* TAGS */}
-                    <StepTitles stepNum='3' stepName='Recipe Tags' description='Add tags to your post to help search for your recipe! (eg. Chicken, Dessert, Vegetarian etc)' inputId='tags'/>
-                    <input type="text" id="tags" name='tagInput' onChange={this.handleChange} value={this.state.tagInput}/>
+                    <StepTitles stepNum='3' stepName='Recipe Tags' description='Add tags to your post to help search for your recipe! (eg. Chicken, Dessert, Vegetarian etc)' inputId='tags' showLabel={true}/>
+                    <input type="text" id="tags" name='tagInput' value={this.state.tagInput} onChange={this.handleChange}/>
                     <button onClick={this.tagClick}>Add</button>
                     <ul>
                         {this.state.tags.map((tag,i) =>{
@@ -140,7 +191,7 @@ class AddRecipe extends React.Component {
                     </ul>
                     
                     {/* DESCRIPTION */}
-                    <StepTitles stepNum='4' stepName='Recipe Description' description='Add a short description to discuss this delicious addition to your recipe box!' inputId='description'/>
+                    <StepTitles stepNum='4' stepName='Recipe Description' description='Add a short description to discuss this delicious addition to your recipe box!' inputId='description' showLabel={true}/>
                     <textarea name="descriptionInput" id="description" cols="40" rows="10" onChange={this.handleChange} value={this.state.descriptionInput}></textarea>
                     <button onClick={this.descriptionClick}>Add</button>
                     {
@@ -153,18 +204,59 @@ class AddRecipe extends React.Component {
                         )
                         : null
                     }
-                    
 
                     {/* INGREDIENTS */}
-                    <StepTitles stepNum='5' stepName='Ingredients' description='Please add ingredients.' inputId='indgredients'/>
-                    <input type="text" id="ingredients" name='ingredients' />
-                    <button>Add</button>
+                    <StepTitles stepNum='5' stepName='Ingredients' description='Please add ingredients.' showLabel={false}/>
+                    <label htmlFor="quantity">Quantity:</label>
+                    <input type="text" onChange={this.handleChange} value={this.state.quantityInput} name='quantityInput'/>
+
+                    <label htmlFor="Measurement">Measurement:</label>
+                    <select name="" id="" onChange={this.handleChange} value={this.state.measurementInput} name='measurementInput'>
+                        <option value="" disabled selected hidden>Select Measurement:</option>
+                        <option value="Cup(s)">Cup(s)</option>
+                        <option value="tsp.">tsp.</option>
+                        <option value="Tbsp.">Tbsp.</option>
+                        <option value="grams">grams</option>
+                        <option value="lbs.">lbs.</option>
+                        <option value="oz.">oz.</option>
+                        <option value="fl. oz.">fl. oz.</option>
+                        <option value="pint(s)">pint(s)</option>
+                        <option value="quart(s)">quart(s)</option>
+                    </select>
+
+                    <label htmlFor="ingredients">Ingredients:</label>
+                    <input type="text" id="ingredients" name='ingredientsInput' onChange={this.handleChange} value={this.state.ingredientsInput} />
+
+                    <label htmlFor="addDirections">Additional Directions</label>
+                    <input type="text" default='Eg. Finely chopped' name='addDirectionsInput' onChange={this.handleChange} value={this.state.addDirectionsInput}/>
+
+                    <button onClick={this.ingredientsClick}>Add</button>
+                    <ul>
+                        {this.state.ingredients.map((ingred, i) => {
+                            return (
+                                <li key={i}>
+                                    <p>{ingred}</p>
+                                    <div onClick={() => this.clearIngredient(i)}>X</div>
+                                </li>
+                            )
+                        })}
+                    </ul>
 
                     {/* DIRECTIONS */}
-                    <StepTitles stepNum='6' stepName='Directions' description="Please add the directions in order...don't worry, we will number them for you!" inputId='directions'/>
-                    <input type="text" id="directions" name='directions'/>
-                    <button>Add</button>
-                
+                    <StepTitles stepNum='6' stepName='Directions' description="Please add the directions in order...don't worry, we will number them for you!" inputId='directions' showLabel={true}/>
+                    <textarea name="directionInput" id="directions" cols="40" rows="10" onChange={this.handleChange} value={this.state.directionInput}></textarea>
+                    <button onClick={this.directionsClick}>Add</button>
+                    <ol>
+                        {this.state.directions.map((dir, i) => {
+                            return (
+                                <li key={i}>
+                                    <p>{dir}</p>
+                                    <div onClick={() => this.clearDirection(i)}>X</div>
+                                </li>
+                            )
+                        })}
+                    </ol>
+                <input type="submit" value='Create Recipe'/>
                 </form>
             </div>
         )
@@ -176,7 +268,11 @@ const StepTitles = (props) =>{
         <div>
             <h2>Step {props.stepNum}: {props.stepName}</h2>
             <p>{props.description}</p>
-            <label htmlFor={`${props.inputId}`} className='visuallyHidden'>{props.stepName}</label>
+            {props.showLabel 
+                ? (<label htmlFor={`${props.inputId}`} className='visuallyHidden'>{props.stepName}</label>)
+                : null
+            }
+            
         </div>
 
     )
