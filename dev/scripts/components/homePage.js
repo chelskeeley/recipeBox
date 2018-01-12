@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
+import RecipeList from './recipeList.js';
 
 class Homepage extends React.Component {
     constructor(){
@@ -7,6 +8,7 @@ class Homepage extends React.Component {
         this.state = {
             uid: '',
             signedIn: false,
+            recipes: [],
         }
         this.signIn = this.signIn.bind(this)
         this.signOut = this.signOut.bind(this)
@@ -48,7 +50,7 @@ class Homepage extends React.Component {
             {/* have the featured reciped component here */}
 
             {/* recipe list here */}
-
+            <RecipeList data={this.state.recipes}/>
             </div>
         )
     }
