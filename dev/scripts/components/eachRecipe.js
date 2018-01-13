@@ -10,7 +10,8 @@ class EachRecipe extends React.Component{
                 description: '',
                 directions: [],
                 ingredients: [],
-                tags: []
+                tags: [],
+                url: ''
             }
         }
         this.getRecipe = this.getRecipe.bind(this)
@@ -32,7 +33,8 @@ class EachRecipe extends React.Component{
                     description: thisRecipe.description,
                     directions: thisRecipe.directions,
                     ingredients: thisRecipe.ingredients,
-                    tags: thisRecipe.tags
+                    tags: thisRecipe.tags,
+                    url: thisRecipe.image
                 }
             })
         })
@@ -42,6 +44,7 @@ class EachRecipe extends React.Component{
         return (
             <div>
                 <h2>{this.state.recipe.title}</h2>
+                <img src={`${this.state.recipe.url}`} alt=""/>
                 <p>{this.state.recipe.description}</p>
                 <h3>Ingredients</h3>
                 <ul>
