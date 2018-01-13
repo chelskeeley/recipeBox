@@ -15,7 +15,7 @@ class RecipeList extends React.Component {
 
     render(){
         return(
-            <Link to={`/${this.props.data.title}`}>  
+            <Link to={`/${this.props.data.title}/${this.props.data.key}`}>  
                 <li onClick={this.toRecipe}>
                     <h3>{this.props.data.title}</h3>
                 </li>

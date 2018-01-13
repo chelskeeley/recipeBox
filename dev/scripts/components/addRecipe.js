@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import {
         BrowserRouter as Router, Route, Link, Switch, Redirect
     } from 'react-router-dom';
+import ImageUploader from 'react-firebase-image-uploader';
 
 class AddRecipe extends React.Component {
     constructor(){
@@ -11,7 +12,6 @@ class AddRecipe extends React.Component {
         this.state = {
             title: '',
             titleInput: '',
-            imageURL: '',
             tags: [],
             tagInput: '',
             description: '',
@@ -24,6 +24,12 @@ class AddRecipe extends React.Component {
             directions: [],
             directionInput: '',
             titleAdded: false,
+            image: {
+                avatar: '', 
+                isUploading: false,
+                progress: 0,
+                avatarURL: ''
+            }
         }
         this.handleChange = this.handleChange.bind(this);
         this.titleClick = this.titleClick.bind(this);
@@ -36,7 +42,11 @@ class AddRecipe extends React.Component {
         this.ingredientsClick = this.ingredientsClick.bind(this);
         this.clearIngredient = this.clearIngredient.bind(this);
         this.directionsClick = this.directionsClick.bind(this);
-        this.clearDirection = this.clearDirection.bind(this)
+        this.clearDirection = this.clearDirection.bind(this);
+        this.handleUploadStart = this.handleUploadStart.bind(this);
+        this.handleProgress = this.handleProgress.bind(this);
+        this.handleUploadError = this.handleUploadError.bind(this);
+        this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
     }
 
     //saves input in text areas into state
@@ -147,18 +157,21 @@ class AddRecipe extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         const dbRef = firebase.database().ref();
+        // firebase.storage().ref('images').getDownloadURL().then(url => this.setState({ image: { avatarURL: url } }));
+
         let recipeObject = {
             title: this.state.title,
             tags: this.state.tags,
             description: this.state.description,
             ingredients: this.state.ingredients,
-            directions: this.state.directions
+            directions: this.state.directions,
+            image: this.state.image.avatarURL
         };
         dbRef.push(recipeObject);
+        console.log(recipeObject)
         this.setState({
             title: '',
             titleInput: '',
-            imageURL: '',
             tags: [],
             tagInput: '',
             description: '',
@@ -171,11 +184,55 @@ class AddRecipe extends React.Component {
             directions: [],
             directionInput: '',
             titleAdded: false,
+            image: {
+                avatar: '',
+                isUploading: false,
+                progress: 0,
+                avatarURL: ''
+            }
         });
         this.props.history.push('/');
-        
-
     }
+
+    //IMAGE UPLOAD FUNCTIONS
+    handleUploadStart(){
+        this.setState({ 
+            image: {
+                isUploading: true, 
+                progress: 0
+            }
+        })
+    }
+
+    handleProgress(progress){
+        this.setState({ 
+            image: {
+                progress
+            }
+         })
+    }
+
+    handleUploadError(error){
+        this.setState({
+            image: {
+                isUploading: false
+            }
+         });
+        console.error(error);
+    }
+
+    handleUploadSuccess(filename){
+        this.setState({ 
+            image: {
+                avatar: filename, 
+                progress: 100,
+                isUploading: false 
+            }
+        })
+        // firebase.storage().ref('images').getDownloadURL().then(url => this.setState({ image: { avatarURL: url } }));
+        firebase.storage().ref('images').child(filename).getDownloadURL().then(url => this.setState({
+            image:{ avatarURL: url }}));
+    };
 
 
     render(){
@@ -206,6 +263,23 @@ class AddRecipe extends React.Component {
                     {/* IMAGES */}
                     <StepTitles stepNum='2' stepName='Upload Photo' description='Upload or drag and drop an image to add a photo to your post!' inputId='' showLabel={true}/>
                     {/* add image drag and drop functionality here */}
+                    {this.state.image.isUploading &&
+                        <p>Progress: {this.state.image.progress}</p>
+                    }
+                    {this.state.image.avatarURL &&
+                        <img src={this.state.image.avatarURL} />
+                    }
+                    <ImageUploader
+                        name="avatar"
+                        storageRef={firebase.storage().ref('images')}
+                        onUploadStart={this.handleUploadStart}
+                        onUploadError={this.handleUploadError}
+                        onUploadSuccess={this.handleUploadSuccess}
+                        onProgress={this.handleProgress}
+                    />
+
+
+
 
                     {/* TAGS */}
                     <StepTitles stepNum='3' stepName='Recipe Tags' description='Add tags to your post to help search for your recipe! (eg. Chicken, Dessert, Vegetarian etc)' inputId='tags' showLabel={true}/>

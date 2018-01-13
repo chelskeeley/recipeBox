@@ -16,10 +16,11 @@ var config = {
   authDomain: "recipebox-7e786.firebaseapp.com",
   databaseURL: "https://recipebox-7e786.firebaseio.com",
   projectId: "recipebox-7e786",
-  storageBucket: "",
+  storageBucket: "gs://recipebox-7e786.appspot.com/",
   messagingSenderId: "601312177941"
 };
 firebase.initializeApp(config);
+// const storageRef = firebase.storage();
 
 
 class App extends React.Component {
@@ -32,7 +33,7 @@ class App extends React.Component {
               <Switch>
                 <Route exact path='/' component={Homepage}></Route>
                 <Route exact path='/addrecipe' component={AddRecipe}></Route>
-                <Route exact path='/:title' component={EachRecipe}></Route>
+                <Route exact path='/:title/:key' component={EachRecipe}></Route>
               </ Switch>
             </main>
             <footer>
