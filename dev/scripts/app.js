@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import Header from './components/header.js';
 import Homepage from './components/homePage.js';
 import AddRecipe from './components/addRecipe.js';
+import EachRecipe from './components/eachRecipe.js';
 
 // Initialize Firebase
 var config = {
@@ -31,6 +32,7 @@ class App extends React.Component {
               <Switch>
                 <Route exact path='/' component={Homepage}></Route>
                 <Route exact path='/addrecipe' component={AddRecipe}></Route>
+                <Route exact path='/:title' component={EachRecipe}></Route>
               </ Switch>
             </main>
             <footer>
