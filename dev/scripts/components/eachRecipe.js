@@ -11,13 +11,27 @@ class EachRecipe extends React.Component{
                 directions: [],
                 ingredients: [],
                 tags: [],
-                url: ''
-            }
+                url: '',
+                uid: ''
+            },
+            currentUser: ''
         }
-        this.getRecipe = this.getRecipe.bind(this)
+        this.getRecipe = this.getRecipe.bind(this);
+        this.deleteRecipe = this.deleteRecipe.bind(this);
     }
 
     componentDidMount(){
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    currentUser: user.uid
+                })
+            } else {
+                this.setState({
+                    currentUser: ''
+                })
+            }
+        })
         this.getRecipe();
         
     }
@@ -34,13 +48,33 @@ class EachRecipe extends React.Component{
                     directions: thisRecipe.directions,
                     ingredients: thisRecipe.ingredients,
                     tags: thisRecipe.tags,
-                    url: thisRecipe.image
+                    url: thisRecipe.image,
+                    uid: thisRecipe.uid
                 }
             })
         })
     }
 
+    deleteRecipe(){
+        const dbRef = firebase.database().ref(this.props.match.params.key);
+        dbRef.remove();
+        this.props.history.push('/');
+
+    }
+
     render(){
+        let deleteRecipe;
+        if (this.state.currentUser === this.state.recipe.uid){
+            deleteRecipe = (
+                <div>
+                    <p>You are the creator of this recipe! Thank you so much for your contribution to Recipe Box! But if for some reason you would like to remove this recipe, click the delete button below.</p>
+                    <p><span>Warning: </span>These recipes CANNOT be recovered, so make certain you are sure!</p>
+                    <button onClick={this.deleteRecipe} >Delete Recipe</button>
+                </div>
+            )
+        } else {
+            deleteRecipe = ''
+        }
         return (
             <div>
                 <h2>{this.state.recipe.title}</h2>
@@ -64,8 +98,7 @@ class EachRecipe extends React.Component{
                         )
                     })}
                 </ol>
-
-
+                {deleteRecipe}
             </div>
         )
     }

@@ -20,19 +20,32 @@ var config = {
   messagingSenderId: "601312177941"
 };
 firebase.initializeApp(config);
-// const storageRef = firebase.storage();
 
 
 class App extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      uid: ''
+    }
+    this.getUid = this.getUid.bind(this)
+  }
+
+  getUid(id){
+    this.setState({
+      uid: id
+    })
+  }
+
     render() {
       return (
         <Router>
           <div>
-            <Header />
+            <Header getUid={this.getUid}/>
             <main>
               <Switch>
                 <Route exact path='/' component={Homepage}></Route>
-                <Route exact path='/addrecipe' component={AddRecipe}></Route>
+                <Route exact path='/addrecipe/:uid' component={AddRecipe}></Route>
                 <Route exact path='/:title/:key' component={EachRecipe}></Route>
               </ Switch>
             </main>

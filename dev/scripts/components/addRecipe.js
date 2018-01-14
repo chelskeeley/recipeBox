@@ -24,6 +24,7 @@ class AddRecipe extends React.Component {
             directions: [],
             directionInput: '',
             titleAdded: false,
+            uid: '',
             image: {
                 avatar: '', 
                 isUploading: false,
@@ -47,6 +48,13 @@ class AddRecipe extends React.Component {
         this.handleProgress = this.handleProgress.bind(this);
         this.handleUploadError = this.handleUploadError.bind(this);
         this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
+    }
+
+    componentDidMount(){
+        this.setState({
+            uid: this.props.match.params.uid
+        })
+        
     }
 
     //saves input in text areas into state
@@ -157,15 +165,14 @@ class AddRecipe extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         const dbRef = firebase.database().ref();
-        // firebase.storage().ref('images').getDownloadURL().then(url => this.setState({ image: { avatarURL: url } }));
-
         let recipeObject = {
             title: this.state.title,
             tags: this.state.tags,
             description: this.state.description,
             ingredients: this.state.ingredients,
             directions: this.state.directions,
-            image: this.state.image.avatarURL
+            image: this.state.image.avatarURL,
+            uid: this.state.uid
         };
         dbRef.push(recipeObject);
         this.setState({
@@ -183,6 +190,7 @@ class AddRecipe extends React.Component {
             directions: [],
             directionInput: '',
             titleAdded: false,
+            uid: '',
             image: {
                 avatar: '',
                 isUploading: false,
