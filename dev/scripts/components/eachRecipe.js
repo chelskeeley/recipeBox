@@ -44,7 +44,9 @@ class EachRecipe extends React.Component{
         return (
             <div>
                 <h2>{this.state.recipe.title}</h2>
-                <img src={`${this.state.recipe.url}`} alt=""/>
+                <div className="recipe__image">
+                    <img src={`${this.state.recipe.url}`} alt=""/>
+                </div>
                 <p>{this.state.recipe.description}</p>
                 <h3>Ingredients</h3>
                 <ul>

@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import RecipeList from './recipeList.js';
 
-class Homepage extends React.Component {
+class Homepage extends React.Component { 
     constructor(){
         super();
         this.state = {

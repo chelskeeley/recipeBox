@@ -168,7 +168,6 @@ class AddRecipe extends React.Component {
             image: this.state.image.avatarURL
         };
         dbRef.push(recipeObject);
-        console.log(recipeObject)
         this.setState({
             title: '',
             titleInput: '',
@@ -250,7 +249,7 @@ class AddRecipe extends React.Component {
 
         return (
             <div>
-                <form action="" onSubmit={this.handleSubmit}>
+                <form action="" onSubmit={this.handleSubmit} className="addRecipeForm">
                     {/* TITLE */}
                     <StepTitles stepNum='1' stepName='Recipe Title' description='' inputId='title' showLabel={true}/>
                     <input type="text" id='title' name='titleInput' onChange={this.handleChange} value={this.state.titleInput} ref={el => this.inputValue = el}/>
@@ -261,14 +260,8 @@ class AddRecipe extends React.Component {
                     </div>
 
                     {/* IMAGES */}
-                    <StepTitles stepNum='2' stepName='Upload Photo' description='Upload or drag and drop an image to add a photo to your post!' inputId='' showLabel={true}/>
+                    <StepTitles stepNum='2' stepName='Upload Photo' description='Upload an image to add a photo to your post!' inputId='' showLabel={true}/>
                     {/* add image drag and drop functionality here */}
-                    {this.state.image.isUploading &&
-                        <p>Progress: {this.state.image.progress}</p>
-                    }
-                    {this.state.image.avatarURL &&
-                        <img src={this.state.image.avatarURL} />
-                    }
                     <ImageUploader
                         name="avatar"
                         storageRef={firebase.storage().ref('images')}
@@ -276,7 +269,16 @@ class AddRecipe extends React.Component {
                         onUploadError={this.handleUploadError}
                         onUploadSuccess={this.handleUploadSuccess}
                         onProgress={this.handleProgress}
-                    />
+                        />
+                        {this.state.image.isUploading &&
+                            <p>Progress: {this.state.image.progress}</p>
+                        }
+                        {this.state.image.avatarURL ? (
+                            <div className="imagePreview">
+                                <img src={this.state.image.avatarURL} />
+                            </div>)
+                            : null
+                        }
 
 
 
