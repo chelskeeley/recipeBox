@@ -25,6 +25,7 @@ class AddRecipe extends React.Component {
             directionInput: '',
             titleAdded: false,
             uid: '',
+            signedIn: false,
             image: {
                 avatar: '', 
                 isUploading: false,
@@ -53,6 +54,17 @@ class AddRecipe extends React.Component {
     componentDidMount(){
         this.setState({
             uid: this.props.match.params.uid
+        });
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    signedIn: true,
+                })
+            } else {
+                this.setState({
+                    signedIn: false,
+                })
+            }
         })
         
     }
@@ -255,125 +267,138 @@ class AddRecipe extends React.Component {
             titleValue = this.state.title;
         }
 
+        let mainContent;
+            if (this.state.signedIn) {
+                mainContent = (
+                    <div>
+                        <form action="" onSubmit={this.handleSubmit} className="addRecipeForm">
+                            {/* TITLE */}
+                            <StepTitles stepNum='1' stepName='Recipe Title' description='' inputId='title' showLabel={true} />
+                            <input type="text" id='title' name='titleInput' onChange={this.handleChange} value={this.state.titleInput} ref={el => this.inputValue = el} />
+                            <button onClick={this.titleClick}>Add</button>
+                            <div>
+                                <p>{titleContent}</p>
+                                <div onClick={this.clearTitle}>{titleX}</div>
+                            </div>
+
+                            {/* IMAGES */}
+                            <StepTitles stepNum='2' stepName='Upload Photo' description='Upload an image to add a photo to your post!' inputId='' showLabel={true} />
+                            {/* add image drag and drop functionality here */}
+                            <ImageUploader
+                                name="avatar"
+                                storageRef={firebase.storage().ref('images')}
+                                onUploadStart={this.handleUploadStart}
+                                onUploadError={this.handleUploadError}
+                                onUploadSuccess={this.handleUploadSuccess}
+                                onProgress={this.handleProgress}
+                            />
+                            {this.state.image.isUploading &&
+                                <p>Progress: {this.state.image.progress}</p>
+                            }
+                            {this.state.image.avatarURL ? (
+                                <div className="imagePreview">
+                                    <img src={this.state.image.avatarURL} />
+                                </div>)
+                                : null
+                            }
+
+
+
+
+                            {/* TAGS */}
+                            <StepTitles stepNum='3' stepName='Recipe Tags' description='Add tags to your post to help search for your recipe! (eg. Chicken, Dessert, Vegetarian etc)' inputId='tags' showLabel={true} />
+                            <input type="text" id="tags" name='tagInput' value={this.state.tagInput} onChange={this.handleChange} />
+                            <button onClick={this.tagClick}>Add</button>
+                            <ul>
+                                {this.state.tags.map((tag, i) => {
+                                    return (
+                                        <li key={i}>
+                                            <p>{tag}</p>
+                                            <div onClick={() => this.clearTag(i)}>X</div>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+
+                            {/* DESCRIPTION */}
+                            <StepTitles stepNum='4' stepName='Recipe Description' description='Add a short description to discuss this delicious addition to your recipe box!' inputId='description' showLabel={true} />
+                            <textarea name="descriptionInput" id="description" cols="40" rows="10" onChange={this.handleChange} value={this.state.descriptionInput}></textarea>
+                            <button onClick={this.descriptionClick}>Add</button>
+                            {
+                                this.state.description
+                                    ? (
+                                        <div>
+                                            <p>{this.state.description}</p>
+                                            <div onClick={this.descriptionX}>X</div>
+                                        </div>
+                                    )
+                                    : null
+                            }
+
+                            {/* INGREDIENTS */}
+                            <StepTitles stepNum='5' stepName='Ingredients' description='Please add ingredients.' showLabel={false} />
+                            <label htmlFor="quantity">Quantity:</label>
+                            <input type="text" onChange={this.handleChange} value={this.state.quantityInput} name='quantityInput' />
+
+                            <label htmlFor="Measurement">Measurement:</label>
+                            <select name="" id="" onChange={this.handleChange} value={this.state.measurementInput} name='measurementInput'>
+                                <option value="" disabled selected hidden>Select Measurement:</option>
+                                <option value="Cup(s)">Cup(s)</option>
+                                <option value="tsp.">tsp.</option>
+                                <option value="Tbsp.">Tbsp.</option>
+                                <option value="grams">grams</option>
+                                <option value="lbs.">lbs.</option>
+                                <option value="oz.">oz.</option>
+                                <option value="fl. oz.">fl. oz.</option>
+                                <option value="pint(s)">pint(s)</option>
+                                <option value="quart(s)">quart(s)</option>
+                            </select>
+
+                            <label htmlFor="ingredients">Ingredients:</label>
+                            <input type="text" id="ingredients" name='ingredientsInput' onChange={this.handleChange} value={this.state.ingredientsInput} />
+
+                            <label htmlFor="addDirections">Additional Directions</label>
+                            <input type="text" default='Eg. Finely chopped' name='addDirectionsInput' onChange={this.handleChange} value={this.state.addDirectionsInput} />
+
+                            <button onClick={this.ingredientsClick}>Add</button>
+                            <ul>
+                                {this.state.ingredients.map((ingred, i) => {
+                                    return (
+                                        <li key={i}>
+                                            <p>{ingred}</p>
+                                            <div onClick={() => this.clearIngredient(i)}>X</div>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+
+                            {/* DIRECTIONS */}
+                            <StepTitles stepNum='6' stepName='Directions' description="Please add the directions in order...don't worry, we will number them for you!" inputId='directions' showLabel={true} />
+                            <textarea name="directionInput" id="directions" cols="40" rows="10" onChange={this.handleChange} value={this.state.directionInput}></textarea>
+                            <button onClick={this.directionsClick}>Add</button>
+                            <ol>
+                                {this.state.directions.map((dir, i) => {
+                                    return (
+                                        <li key={i}>
+                                            <p>{dir}</p>
+                                            <div onClick={() => this.clearDirection(i)}>X</div>
+                                        </li>
+                                    )
+                                })}
+                            </ol>
+                            <input type="submit" value='Create Recipe' />
+                        </form>
+                    </div>
+                )
+            } else {
+                mainContent = (
+                    <div>Please log in or create and account to add a recipe!</div>
+                )
+            }
+
         return (
             <div>
-                <form action="" onSubmit={this.handleSubmit} className="addRecipeForm">
-                    {/* TITLE */}
-                    <StepTitles stepNum='1' stepName='Recipe Title' description='' inputId='title' showLabel={true}/>
-                    <input type="text" id='title' name='titleInput' onChange={this.handleChange} value={this.state.titleInput} ref={el => this.inputValue = el}/>
-                    <button onClick={this.titleClick}>Add</button>
-                    <div>
-                        <p>{titleContent}</p>
-                        <div onClick={this.clearTitle}>{titleX}</div>
-                    </div>
-
-                    {/* IMAGES */}
-                    <StepTitles stepNum='2' stepName='Upload Photo' description='Upload an image to add a photo to your post!' inputId='' showLabel={true}/>
-                    {/* add image drag and drop functionality here */}
-                    <ImageUploader
-                        name="avatar"
-                        storageRef={firebase.storage().ref('images')}
-                        onUploadStart={this.handleUploadStart}
-                        onUploadError={this.handleUploadError}
-                        onUploadSuccess={this.handleUploadSuccess}
-                        onProgress={this.handleProgress}
-                        />
-                        {this.state.image.isUploading &&
-                            <p>Progress: {this.state.image.progress}</p>
-                        }
-                        {this.state.image.avatarURL ? (
-                            <div className="imagePreview">
-                                <img src={this.state.image.avatarURL} />
-                            </div>)
-                            : null
-                        }
-
-
-
-
-                    {/* TAGS */}
-                    <StepTitles stepNum='3' stepName='Recipe Tags' description='Add tags to your post to help search for your recipe! (eg. Chicken, Dessert, Vegetarian etc)' inputId='tags' showLabel={true}/>
-                    <input type="text" id="tags" name='tagInput' value={this.state.tagInput} onChange={this.handleChange}/>
-                    <button onClick={this.tagClick}>Add</button>
-                    <ul>
-                        {this.state.tags.map((tag,i) =>{
-                            return (
-                                <li key={i}>
-                                    <p>{tag}</p>
-                                    <div onClick={()=> this.clearTag(i)}>X</div>
-                                </li>
-                            )
-                        })}
-                    </ul>
-                    
-                    {/* DESCRIPTION */}
-                    <StepTitles stepNum='4' stepName='Recipe Description' description='Add a short description to discuss this delicious addition to your recipe box!' inputId='description' showLabel={true}/>
-                    <textarea name="descriptionInput" id="description" cols="40" rows="10" onChange={this.handleChange} value={this.state.descriptionInput}></textarea>
-                    <button onClick={this.descriptionClick}>Add</button>
-                    {
-                        this.state.description
-                        ? (
-                            <div>
-                                <p>{this.state.description}</p>
-                                <div onClick={this.descriptionX}>X</div>
-                            </div>
-                        )
-                        : null
-                    }
-
-                    {/* INGREDIENTS */}
-                    <StepTitles stepNum='5' stepName='Ingredients' description='Please add ingredients.' showLabel={false}/>
-                    <label htmlFor="quantity">Quantity:</label>
-                    <input type="text" onChange={this.handleChange} value={this.state.quantityInput} name='quantityInput'/>
-
-                    <label htmlFor="Measurement">Measurement:</label>
-                    <select name="" id="" onChange={this.handleChange} value={this.state.measurementInput} name='measurementInput'>
-                        <option value="" disabled selected hidden>Select Measurement:</option>
-                        <option value="Cup(s)">Cup(s)</option>
-                        <option value="tsp.">tsp.</option>
-                        <option value="Tbsp.">Tbsp.</option>
-                        <option value="grams">grams</option>
-                        <option value="lbs.">lbs.</option>
-                        <option value="oz.">oz.</option>
-                        <option value="fl. oz.">fl. oz.</option>
-                        <option value="pint(s)">pint(s)</option>
-                        <option value="quart(s)">quart(s)</option>
-                    </select>
-
-                    <label htmlFor="ingredients">Ingredients:</label>
-                    <input type="text" id="ingredients" name='ingredientsInput' onChange={this.handleChange} value={this.state.ingredientsInput} />
-
-                    <label htmlFor="addDirections">Additional Directions</label>
-                    <input type="text" default='Eg. Finely chopped' name='addDirectionsInput' onChange={this.handleChange} value={this.state.addDirectionsInput}/>
-
-                    <button onClick={this.ingredientsClick}>Add</button>
-                    <ul>
-                        {this.state.ingredients.map((ingred, i) => {
-                            return (
-                                <li key={i}>
-                                    <p>{ingred}</p>
-                                    <div onClick={() => this.clearIngredient(i)}>X</div>
-                                </li>
-                            )
-                        })}
-                    </ul>
-
-                    {/* DIRECTIONS */}
-                    <StepTitles stepNum='6' stepName='Directions' description="Please add the directions in order...don't worry, we will number them for you!" inputId='directions' showLabel={true}/>
-                    <textarea name="directionInput" id="directions" cols="40" rows="10" onChange={this.handleChange} value={this.state.directionInput}></textarea>
-                    <button onClick={this.directionsClick}>Add</button>
-                    <ol>
-                        {this.state.directions.map((dir, i) => {
-                            return (
-                                <li key={i}>
-                                    <p>{dir}</p>
-                                    <div onClick={() => this.clearDirection(i)}>X</div>
-                                </li>
-                            )
-                        })}
-                    </ol>
-                    <input type="submit" value='Create Recipe' />
-                </form>
+                {mainContent}
             </div>
         )
     }
