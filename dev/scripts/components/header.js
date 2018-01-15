@@ -111,7 +111,7 @@ class Header extends React.Component{
 
         if (!this.state.signedIn) {
             logInText = (
-                <p>Please <a href='javascript:void(0)' onClick={this.signInClick}>sign in</a> or <a href="javascript:void(0)" onClick={this.createAccountClick}>create an account</a> to create a recipe!</p>
+                <p>Please <a href='javascript:void(0)' onClick={this.signInClick} className='signInOutLinks'>sign in</a> or <a href="javascript:void(0)" onClick={this.createAccountClick} className='signInOutLinks'>create an account</a> to create a recipe!</p>
             ),
                 logOutButton = ''
             if (this.state.clickedSignIn) {
@@ -121,7 +121,7 @@ class Header extends React.Component{
                         <input type="email" id='email' name='email' value={this.state.email} onChange={this.handleChange} />
                         <label htmlFor="password">Enter Password:</label>
                         <input type="password" id='password' name='password' value={this.state.password} onChange={this.handleChange} />
-                        <input type="submit" />
+                        <input type="submit" className="button"/>
                     </form>
                 )
             } else if (this.state.clickedCreateAccount) {
@@ -133,7 +133,7 @@ class Header extends React.Component{
                         <input type="password" id='password' name='password' value={this.state.password} onChange={this.handleChange} />
                         <label htmlFor="confirmPassword">Confirm Password:</label>
                         <input type="password" id='confirmPassword' name='confirmPassword' value={this.state.confirmPassword} onChange={this.handleChange} />
-                        <input type="submit" />
+                        <input type="submit" className="button" />
                     </form>
                 )
             } else {
@@ -143,19 +143,24 @@ class Header extends React.Component{
         } else {
             logInText = '';
             logInForm = '',
-                logOutButton = (<button onClick={this.signOut}>Sign Out</button>)
+            logOutButton = (<a href="javascript:void(0)" onClick={this.signOut} className="button navLink">Sign Out</a>)
         }
         return (
             <div>
                 <header>
-                    <h1>Recipe Box</h1>
-                    <Link to={`/addrecipe/${this.state.uid}`}>Add Recipe</Link>
-                    <Link to='/'>Home</Link>
+                    <div className="wrapper">
+                        <h1>Recipe Box</h1>
+                        <nav>
+                            <Link to='/' className="button navLink">Home</Link>
+                            <Link to={`/addrecipe/${this.state.uid}`} className="button navLink">Add Recipe</Link>
+                            {logOutButton}
+                        </nav>
+                    </div>
                 </header>
-                <p>Welcome to Recipe Box! We are a hub to allow you to create a share recipes with your fellow cooks! </p>
-                {logInText}
-                {logInForm}
-                {logOutButton}
+                <div className="wrapper">
+                    {logInText}
+                    {logInForm}
+                </div>
             </div>
         )
     }

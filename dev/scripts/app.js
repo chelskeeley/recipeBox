@@ -43,14 +43,18 @@ class App extends React.Component {
           <div>
             <Header getUid={this.getUid}/>
             <main>
-              <Switch>
-                <Route exact path='/' component={Homepage}></Route>
-                <Route exact path='/addrecipe/:uid' component={AddRecipe}></Route>
-                <Route exact path='/:title/:key' component={EachRecipe}></Route>
-              </ Switch>
+              <div className='wrapper'>
+                <Switch>
+                  <Route exact path='/' component={Homepage}></Route>
+                  <Route exact path='/addrecipe/:uid' component={AddRecipe}></Route>
+                  <Route exact path='/:title/:key' component={EachRecipe}></Route>
+                </ Switch>
+              </div>
             </main>
             <footer>
-              <p>&copy; 2018 Chelsea Keeley</p>
+              <div className="wrapper">
+                <p>&copy; 2018 Chelsea Keeley</p>
+              </div>
             </footer>
         </div>
           </Router>

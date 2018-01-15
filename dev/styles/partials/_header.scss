@@ -1,0 +1,24 @@
+header {
+    margin-bottom: 60px;
+    .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    h1 {
+        width: 60%;
+    }
+    nav {
+        width: 40%;
+        display: flex;
+        justify-content: flex-end;
+        a {
+            margin-left: 20px;
+        }
+    }
+}
+
+.signInOutLinks {
+    text-decoration: underline;
+    font-size: 1.8rem;
+}

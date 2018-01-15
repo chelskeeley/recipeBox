@@ -66,10 +66,10 @@ class EachRecipe extends React.Component{
         let deleteRecipe;
         if (this.state.currentUser === this.state.recipe.uid){
             deleteRecipe = (
-                <div>
+                <div className='deleteRecipeContainer'>
                     <p>You are the creator of this recipe! Thank you so much for your contribution to Recipe Box! But if for some reason you would like to remove this recipe, click the delete button below.</p>
                     <p><span>Warning: </span>These recipes CANNOT be recovered, so make certain you are sure!</p>
-                    <button onClick={this.deleteRecipe} >Delete Recipe</button>
+                    <button onClick={this.deleteRecipe} className='button'>Delete Recipe</button>
                 </div>
             )
         } else {

@@ -14,11 +14,11 @@ class RecipeList extends React.Component {
     render(){
         
         return(
-            <Link to={`/${this.props.data.title}/${this.props.data.key}`}>  
-                <li onClick={this.toRecipe}>
+            <li onClick={this.toRecipe}>
+                <Link to={`/${this.props.data.title}/${this.props.data.key}`}>  
                     <h3>{this.props.data.title}</h3>
-                </li>
-            </ Link>
+                </ Link>
+            </li>
         )
     }
 }
