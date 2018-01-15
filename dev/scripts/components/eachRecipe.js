@@ -76,12 +76,14 @@ class EachRecipe extends React.Component{
             deleteRecipe = ''
         }
         return (
-            <div>
+            <div className='showRecipe'>
                 <h2>{this.state.recipe.title}</h2>
-                <div className="recipe__image">
-                    <img src={`${this.state.recipe.url}`} alt=""/>
+                <div className='descriptionContainer clearfix'>
+                    <div className="recipe__image">
+                        <img src={`${this.state.recipe.url}`} alt=""/>
+                    </div>
+                    <p>{this.state.recipe.description}</p>
                 </div>
-                <p>{this.state.recipe.description}</p>
                 <h3>Ingredients</h3>
                 <ul>
                     {this.state.recipe.ingredients.map((ingred, i)=>{

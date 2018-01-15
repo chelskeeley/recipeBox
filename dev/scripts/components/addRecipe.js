@@ -272,7 +272,7 @@ class AddRecipe extends React.Component {
                 mainContent = (
                     <div>
                         <h2>Add Recipe</h2>
-                        <p>Follow these easy steps to add a recipe to Recipe Box! Don't worry, every section you add allows you to preview it! So if you make a mistake, just click the 'X' to remove it, and add again!</p>
+                        <p>Follow these easy steps to add a recipe to Recipe Box! Don't worry, every section you add allows you to preview it! So if you make a mistake, just click the <i class="fa fa-times-circle" aria-hidden="true"></i> to remove it, and add again!</p>
                         <form action="" onSubmit={this.handleSubmit} className="addRecipeForm">
                             {/* TITLE */}
                             <StepTitles stepNum='1' stepName='Recipe Title' description='' inputId='title' showLabel={true} />

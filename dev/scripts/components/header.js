@@ -117,22 +117,32 @@ class Header extends React.Component{
             if (this.state.clickedSignIn) {
                 logInForm = (
                     <form onSubmit={this.signIn}>
-                        <label htmlFor="email">Enter Email:</label>
-                        <input type="email" id='email' name='email' value={this.state.email} onChange={this.handleChange} />
-                        <label htmlFor="password">Enter Password:</label>
-                        <input type="password" id='password' name='password' value={this.state.password} onChange={this.handleChange} />
+                        <div className="email">
+                            <label htmlFor="email">Enter Email:</label>
+                            <input type="email" id='email' name='email' value={this.state.email} onChange={this.handleChange} />
+                        </div>
+                        <div className="password">
+                            <label htmlFor="password">Enter Password:</label>
+                            <input type="password" id='password' name='password' value={this.state.password} onChange={this.handleChange} />
+                        </div>
                         <input type="submit" className="button"/>
                     </form>
                 )
             } else if (this.state.clickedCreateAccount) {
                 logInForm = (
                     <form onSubmit={this.createAccount}>
-                        <label htmlFor="email">Enter Email:</label>
-                        <input type="email" id='email' name='email' value={this.state.email} onChange={this.handleChange} />
-                        <label htmlFor="password">Enter Password:</label>
-                        <input type="password" id='password' name='password' value={this.state.password} onChange={this.handleChange} />
-                        <label htmlFor="confirmPassword">Confirm Password:</label>
-                        <input type="password" id='confirmPassword' name='confirmPassword' value={this.state.confirmPassword} onChange={this.handleChange} />
+                        <div className="email">
+                            <label htmlFor="email">Enter Email:</label>
+                            <input type="email" id='email' name='email' value={this.state.email} onChange={this.handleChange} />
+                        </div>
+                        <div className="password">
+                            <label htmlFor="password">Enter Password:</label>
+                            <input type="password" id='password' name='password' value={this.state.password} onChange={this.handleChange} />
+                        </div>
+                        <div className="confirm">
+                            <label htmlFor="confirmPassword">Confirm Password:</label>
+                            <input type="password" id='confirmPassword' name='confirmPassword' value={this.state.confirmPassword} onChange={this.handleChange} />
+                        </div>
                         <input type="submit" className="button" />
                     </form>
                 )
@@ -157,7 +167,7 @@ class Header extends React.Component{
                         </nav>
                     </div>
                 </header>
-                <div className="wrapper">
+                <div className="wrapper logIn">
                     {logInText}
                     {logInForm}
                 </div>

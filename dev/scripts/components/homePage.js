@@ -45,7 +45,7 @@ class Homepage extends React.Component {
             <div>
                 <h2>Welcome to Recipe Box!</h2>
                 <p>We are a hub to allow you to create and share recipes with your fellow food-lovers! Anyone can browse the recipes, but in order to contribute to Recipe Box, please sign in or create an account!</p>
-                <ul>
+                <ul className='recipeTiles'>
                 {/* recipe list here */}
                 {this.state.recipes.map((item,i)=>{
                     return <RecipeList data={item} key={item.key} uid={this.state.uid}/>

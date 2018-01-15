@@ -17,6 +17,10 @@ class RecipeList extends React.Component {
             <li onClick={this.toRecipe}>
                 <Link to={`/${this.props.data.title}/${this.props.data.key}`}>  
                     <h3>{this.props.data.title}</h3>
+                    <div className="tileImage">
+                    {/* {console.log(this.props.data)} */}
+                        <img src={`${this.props.data.image}`} alt="" />
+                    </div>
                 </ Link>
             </li>
         )

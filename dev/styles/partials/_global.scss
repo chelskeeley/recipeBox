@@ -10,6 +10,11 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+main {
+    min-height: calc(100vh - 224px - 64px);
+    
+}
+
 .wrapper {
     max-width: 900px;
     margin: 0 auto;

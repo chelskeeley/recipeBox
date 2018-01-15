@@ -22,3 +22,25 @@ header {
     text-decoration: underline;
     font-size: 1.8rem;
 }
+
+.logIn {
+    form{
+        display: flex;
+        // flex-direction: column;
+        input {
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .email,
+        .password,
+        .confirm {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 20px;
+        }
+        input[type=submit]{
+            align-self: flex-end;
+        }
+    }
+}
